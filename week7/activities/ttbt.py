@@ -2,26 +2,52 @@
 The program has a number of bugs that are introduced one at a time. The goal is to find and fix the bugs.
 Ensure you step through this program in an IDE debugger to understand how the program works and to find the bugs.'''
 #TODO Add pytest to show debugging
-board = [[' ' for _ in range(3)] for _ in range(3)]
+
+# create a list of 3 lists (/ rows) each containing 3 times 1 space
+board = [[' ' for number in range(3)] for number in range(3)]
+# [[' ',' ',' '],
+#  [' ',' ',' '],
+#  [' ',' ',' ']]
 
 def print_board():
     for row in board:
-     
+        # prints spaces while inserting | between them
         print('|'.join(row))
         print('-' * 5)
 
 
 def is_win(player, board_snapshot=board):
     '''Check rows, columns, and diagonals for win condition for a given player'''
+    # Check victory along rows
+    # loop each row
     for i in range(3):
-        if not [cell == player for cell in board_snapshot[i]]:  # Rows
-            return False
-        if not [board_snapshot[j][i] == player for j in range(3)]:  # Columns
-            return False
-    if board_snapshot[1][0] == board_snapshot[1][1] == board_snapshot[2][2] == player or \
-       board_snapshot[0][0] == board_snapshot[2][1] == board_snapshot[2][0] == player:  # Diagonals
-        return False
-    return None
+        # for current row, return list of True/False if player is present
+        # in each cell.
+        player_won = True
+        for compa in [cell == player for cell in board_snapshot[i]]:  # Rows
+            # if one False is detected
+            if compa == False:
+                player_won = False
+        # if remains True after the loop
+        if player_won == True:
+            return True
+
+    # check victory columnwise; loop row 0,1,2, freeze element to great forloop
+        player_won = True
+        #jfastloop
+        for compa in [board_snapshot[j][i] == player for j in range(3)]:
+            # if one False is detected
+            if compa == False:
+                player_won = False
+        # if remains True after the loop
+        if player_won == True:
+            return True
+
+    if board_snapshot[2][0] == board_snapshot[1][1] == board_snapshot[0][2] == player or \
+       board_snapshot[0][0] == board_snapshot[1][1] == board_snapshot[2][2] == player:  # Diagonals
+        return True
+    # if not return True, is_win False
+    return False
 
 def tally_wins(results):
     # Leveraging the fact that in Python: True = 1 and False = 0 
@@ -30,9 +56,9 @@ def tally_wins(results):
 
 
 def main():
-    current_player = 'X'
+    current_player = 'o'
     moves = 0
-    results = 0
+    results = []
 
     while moves < 9:
         print_board()
@@ -47,7 +73,7 @@ def main():
                 print_board()
                 print(f"Player {current_player} wins!")
                 return
-            current_player = 'O' if current_player == 'X' else 'X'  # Switch player
+            current_player = 'x' if current_player == 'o' else 'o'  # Switch player
             moves += 1
         else:
             print("Cell already occupied! Try again.")
