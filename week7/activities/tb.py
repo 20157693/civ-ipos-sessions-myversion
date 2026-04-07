@@ -7,6 +7,12 @@ The goal is to find and fix the bugs.
 Ensure you step through this program in pdb only to understand how the program works and to find the bugs.'''
 
 # Once debugged add some documentation examples to help the next programmer!
+
+# set PYTHONBREAKPOINT=0
+# python -m unittest discover -s tests -v
+# sphinx-quickstart
+# sphinx-apidoc -o docs/ .
+
 import sys
 # import os
 
@@ -17,7 +23,8 @@ def add_task(tasks, task):
 def mark_task_completed(tasks, index):
     breakpoint()
     if 0 <= index < len(tasks):
-        tasks[index] = True 
+        task_name, _completed = tasks[index]
+        tasks[index] = (task_name, True) ###
     else:
         print("Invalid task index.")
 
@@ -35,7 +42,7 @@ def list_tasks(tasks):
         return
 
     for index, task in enumerate(tasks):
-        print(f"{index}. {'[X]' if task else '[ ]'} {task[0]}") 
+        print(f"{index}. {'[X]' if task[1] else '[ ]'} {task[0]}") 
 
 def sort_tasks(tasks):
     breakpoint()
